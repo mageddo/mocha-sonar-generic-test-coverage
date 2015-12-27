@@ -1,28 +1,19 @@
 {
-  "dependencies": {
-  },
-  "description": "xyz",
-  "devDependencies": {},
-  "directories": "./lib",
-  "homepage": "",
-  "installable": true,
-  "keywords": [],
-  "license": "MIT",
-  "main": "index.js",
-  "maintainers": [
-    {
-      "name": "",
-      "email": ""
-    }
-  ],
-  "name": "mocha-sonar-xml-cov-reporter",
-  "optionalDependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/kurtsson/mocha-sonar-xml-cov-reporter.git"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "version": "0.0.4"
+	"description": "Mocha sonar generic tesst coverage integrator",
+	"homepage": "",
+	"keywords": ["mocha", "sonar", "coverage", "generic test"],
+	"license": "MIT",
+	"main": "index.js",
+	"maintainers": [
+		{
+			"name": "Elvis de Freitas",
+			"email": "edigitalb@gmail.com"
+		}
+	],
+	"name": "mocha-sonar-generic-test-coverage",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/mageddo/mocha-sonar-generic-test-coverage"
+	},
+	"version": "0.0.1"
 }

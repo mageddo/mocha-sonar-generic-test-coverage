@@ -5,24 +5,32 @@ module.exports = function (runner) {
 
 	var stack = {};
 	var title;
-	runner.on('test end', function(test, err){
-		stackF = stack[test.file];
+	runner.on('test end', function(test){
+		var file = test.file.substr(test.file.indexOf(process.cwd()) + process.cwd().length + 1);
+		stackF = stack[file];
 		if(!stackF){
-			stackF = stack[test.file] = [];
+			stackF = stack[file] = [];
 		}
-		stackF.push(test);
+		var mtest = {
+			title: test.title,
+			titleId: title + ': ' + test.title,
+			suite: title,
+			stack: test.stack,
+			message: test.message,
+			file: file,
+			duration: test.duration,
+			state: test.state != undefined ? test.state : 'skipped'
+		};
+		stackF.push(mtest);
 	});
 	
 	runner.on('suite', function(test){
 		title = test.title;
 	});
 
-	runner.on('test end', function(test, err){
-		test.suite = test.title;
-		test.titleId = title + ': ' + test.title;
-	});
 	runner.on('fail', function(test, err){
-		test.err = err;
+		test.stack = err.stack;
+		test.message = err.message;
 	});
 
 	runner.on('end', function() {
@@ -42,9 +50,6 @@ module.exports = function (runner) {
 					}
 					append('		</testCase>');
 				}
-				// delete test.err;
-				// console.log(JSON.stringify(test, null, '  '));
-				// console.log(test);
 			});
 			append('	</file>');
 		});

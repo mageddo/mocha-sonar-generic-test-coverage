@@ -39,16 +39,32 @@ module.exports = function (runner) {
 			append(util.format('	<file path="%s">', file));
 			stack[file].forEach(function(test){
 				// console.log('>', test.titleId , test);
-				if(test.state === 'passed'){
-					append(util.format('		<testCase name="%s" duration="%d"/>', espape(test.titleId), test.duration));
-				}else{
-					append(util.format('		<testCase name="%s" duration="%d">', espape(test.titleId), test.duration != undefined ? test.duration : 0));
-					if(test.state === 'failed'){
-						append(util.format('			<failure message="%s"><![CDATA[%s]]></failure>', escape(test.err.message), test.err.stack));
-					}else{
-						append(util.format('			<skipped message="%s"><![CDATA[%s]]></skipped>', espape(test.title), ''));
-					}
-					append('		</testCase>');
+				switch(test.state){
+					case 'passed':
+						append(util.format(
+							'		<testCase name="%s" duration="%d"/>',
+							espape(test.titleId), test.duration
+						));
+						break;
+					default :
+						append(util.format(
+							'		<testCase name="%s" duration="%d">',
+							espape(test.titleId), test.duration != undefined ? test.duration : 0
+						));
+						switch(test.state){
+							case 'failed':
+								append(util.format(
+									'			<failure message="%s"><![CDATA[%s]]></failure>',
+									escape(test.message), test.stack
+								));
+								break;
+							case 'skipped':	
+								append(util.format(
+									'			<skipped message="%s"></skipped>', espape(test.title)
+								));
+								break;
+						}
+						append('		</testCase>');
 				}
 			});
 			append('	</file>');

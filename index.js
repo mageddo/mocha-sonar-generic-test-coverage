@@ -38,7 +38,6 @@ module.exports = function (runner) {
 		Object.keys(stack).forEach(function(file){
 			append(util.format('	<file path="%s">', file));
 			stack[file].forEach(function(test){
-				// console.log('>', test.titleId , test);
 				switch(test.state){
 					case 'passed':
 						append(util.format(
@@ -55,7 +54,7 @@ module.exports = function (runner) {
 							case 'failed':
 								append(util.format(
 									'			<failure message="%s"><![CDATA[%s]]></failure>',
-									escape(test.message), test.stack
+									espape(test.message), test.stack
 								));
 								break;
 							case 'skipped':	
@@ -77,6 +76,7 @@ function append(str) {
 	process.stdout.write('\n');
 };
 function espape(str){
+	str = str || '';
 	return str.replace(/&/g, '&amp;')
 				.replace(/</g, '&lt;')
 				.replace(/>/g, '&gt;')

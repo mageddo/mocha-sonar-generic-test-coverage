@@ -42,24 +42,24 @@ module.exports = function (runner) {
 					case 'passed':
 						append(util.format(
 							'		<testCase name="%s" duration="%d"/>',
-							espape(test.titleId), test.duration
+							escape(test.titleId), test.duration
 						));
 						break;
 					default :
 						append(util.format(
 							'		<testCase name="%s" duration="%d">',
-							espape(test.titleId), test.duration != undefined ? test.duration : 0
+							escape(test.titleId), test.duration != undefined ? test.duration : 0
 						));
 						switch(test.state){
 							case 'failed':
 								append(util.format(
 									'			<failure message="%s"><![CDATA[%s]]></failure>',
-									espape(test.message), test.stack
+									escape(test.message), test.stack
 								));
 								break;
 							case 'skipped':	
 								append(util.format(
-									'			<skipped message="%s"></skipped>', espape(test.title)
+									'			<skipped message="%s"></skipped>', escape(test.title)
 								));
 								break;
 						}
@@ -75,7 +75,7 @@ function append(str) {
 	process.stdout.write(str);
 	process.stdout.write('\n');
 };
-function espape(str){
+function escape(str){
 	str = str || '';
 	return str.replace(/&/g, '&amp;')
 				.replace(/</g, '&lt;')

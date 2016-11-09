@@ -4,7 +4,6 @@ var fs = require('fs'),
 module.exports = function (runner) {
 
 	var stack = {};
-	var title;
 	runner.on('test end', function(test){
 		var file = test.file.substr(test.file.indexOf(process.cwd()) + process.cwd().length + 1);
 		stackF = stack[file];
@@ -13,8 +12,7 @@ module.exports = function (runner) {
 		}
 		var mtest = {
 			title: test.title,
-			titleId: title + ': ' + test.title,
-			suite: title,
+			titleId: test.fullTitle(),
 			stack: test.stack,
 			message: test.message,
 			file: file,
@@ -24,10 +22,6 @@ module.exports = function (runner) {
 		stackF.push(mtest);
 	});
 	
-	runner.on('suite', function(test){
-		title = test.title;
-	});
-
 	runner.on('fail', function(test, err){
 		test.stack = err.stack;
 		test.message = err.message;

@@ -1,7 +1,7 @@
 # Introduction
 This is a mocha reporter project to integrate mocha unit tests to [sonar Generic Test coverage unit tests execution results](http://docs.sonarqube.org/display/PLUG/Generic+Test+Coverage#GenericTestCoverage-UnitTestsExecutionResultsReportFormat)
 
-This reporter is only for unit test sucess/failures verification, to unit test line coverage take a look on [istanul reporter](https://www.npmjs.com/package/grunt-istanbul)
+This reporter is only for unit test sucess/failures verification, to unit test line coverage take a look on [istanbul reporter](https://www.npmjs.com/package/grunt-istanbul)
 
 # Installation
 

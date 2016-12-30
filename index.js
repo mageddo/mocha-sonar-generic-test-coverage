@@ -1,7 +1,19 @@
 var fs = require('fs'),
 		util = require('util');
+var path = require('path');
+var mkdirpSync = require('mkdirp').sync;
+var os = require('os');
+
+var logFd;
 
 module.exports = function (runner) {
+	
+	var outputfile = process.env.mocha_sonar_generic_test_coverage_outputfile;
+
+    if (outputfile) {
+		mkdirpSync(path.dirname(outputfile));
+		logFd = fs.openSync(outputfile, 'w');
+    }
 
 	var stack = {};
 	var title;
@@ -69,11 +81,19 @@ module.exports = function (runner) {
 			append('	</file>');
 		});
 		append('</unitTest>');
+		
+		if(logFd !== undefined) {
+			fs.closeSync(logFd);
+		}
 	});
 };
 function append(str) {
-	process.stdout.write(str);
-	process.stdout.write('\n');
+	if(logFd !== undefined) {
+		fs.writeSync(logFd, str + os.EOL);
+	} else {
+		process.stdout.write(str);
+		process.stdout.write('\n');
+	}
 };
 function espape(str){
 	str = str || '';

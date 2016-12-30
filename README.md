@@ -17,13 +17,17 @@ On **mocha-test** for use with grunt
 		coverage: {
 			options: {
 				reporter: 'mocha-sonar-generic-test-coverage',
-				quiet: true,
-				captureFile: 'unit-tests.xml'
+				quiet: false
 			},
 			src: [
 				'test.js'
 			]
 		}
+	}
+
+If you want to write your report in a specific file (instead of standard output by default), add the following environment variable with the path to the report file:
+	env: {
+    	mocha_sonar_generic_test_coverage_outputfile:'output/unit-tests.xml'
 	}
 
 # Output example 

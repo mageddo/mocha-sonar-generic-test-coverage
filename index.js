@@ -18,7 +18,7 @@ module.exports = function (runner) {
 	var stack = {};
 	var title;
 	runner.on('test end', function(test){
-		var file = test.file.substr(test.file.indexOf(process.cwd()) + process.cwd().length + 1);
+		var file = test.file;
 		stackF = stack[file];
 		if(!stackF){
 			stackF = stack[file] = [];

@@ -4,7 +4,6 @@ var fs = require('fs'),
 module.exports = function (runner) {
 
 	var stack = {};
-	var title;
 	runner.on('test end', function(test){
 		var file = test.file.substr(test.file.indexOf(process.cwd()) + process.cwd().length + 1);
 		stackF = stack[file];
@@ -13,8 +12,7 @@ module.exports = function (runner) {
 		}
 		var mtest = {
 			title: test.title,
-			titleId: title + ': ' + test.title,
-			suite: title,
+			titleId: test.fullTitle(),
 			stack: test.stack,
 			message: test.message,
 			file: file,
@@ -24,10 +22,6 @@ module.exports = function (runner) {
 		stackF.push(mtest);
 	});
 	
-	runner.on('suite', function(test){
-		title = test.title;
-	});
-
 	runner.on('fail', function(test, err){
 		test.stack = err.stack;
 		test.message = err.message;
@@ -42,24 +36,24 @@ module.exports = function (runner) {
 					case 'passed':
 						append(util.format(
 							'		<testCase name="%s" duration="%d"/>',
-							espape(test.titleId), test.duration
+							escape(test.titleId), test.duration
 						));
 						break;
 					default :
 						append(util.format(
 							'		<testCase name="%s" duration="%d">',
-							espape(test.titleId), test.duration != undefined ? test.duration : 0
+							escape(test.titleId), test.duration != undefined ? test.duration : 0
 						));
 						switch(test.state){
 							case 'failed':
 								append(util.format(
 									'			<failure message="%s"><![CDATA[%s]]></failure>',
-									espape(test.message), test.stack
+									escape(test.message), test.stack
 								));
 								break;
 							case 'skipped':	
 								append(util.format(
-									'			<skipped message="%s"></skipped>', espape(test.title)
+									'			<skipped message="%s"></skipped>', escape(test.title)
 								));
 								break;
 						}
@@ -75,7 +69,7 @@ function append(str) {
 	process.stdout.write(str);
 	process.stdout.write('\n');
 };
-function espape(str){
+function escape(str){
 	str = str || '';
 	return str.replace(/&/g, '&amp;')
 				.replace(/</g, '&lt;')

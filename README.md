@@ -5,7 +5,7 @@ This reporter is only for unit test sucess/failures verification, to unit test l
 
 # Installation
 
-	npm install mocha-json-report --save-dev
+	npm install mocha-sonar-generic-test-coverage --save-dev
 
 On pure mocha 
 

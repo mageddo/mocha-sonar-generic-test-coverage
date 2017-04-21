@@ -4,13 +4,14 @@ var fs = require('fs'),
 	mkdirpSync = require('mkdirp').sync,
 	os = require('os');
 
-var logFd;
 
 module.exports = function (runner, options) {
 
-	var stack = {};
+	var logFd, 
+	stack = {};
 
-	var outputfile = getProp(options, 'mstc.outputFile');
+	var envVal = process.env.mocha_sonar_generic_test_coverage_outputfile;
+	var outputfile = envVal != null ? envVal : getProp(options, 'mstc.outputFile');
 	if (outputfile) {
 		mkdirpSync(path.dirname(outputfile));
 		logFd = fs.openSync(outputfile, 'w');
@@ -41,41 +42,41 @@ module.exports = function (runner, options) {
 	});
 
 	runner.on('end', function() {
-		append('<unitTest version="1">');
+		append(logFd, '<unitTest version="1">');
 		Object.keys(stack).forEach(function(file){
-			append(util.format('	<file path="%s">', file));
+			append(logFd, util.format('	<file path="%s">', file));
 			stack[file].forEach(function(test){
 				switch(test.state){
 					case 'passed':
-						append(util.format(
+						append(logFd, util.format(
 							'		<testCase name="%s" duration="%d"/>',
 							escape(test.titleId), test.duration
 						));
 						break;
 					default :
-						append(util.format(
+						append(logFd, util.format(
 							'		<testCase name="%s" duration="%d">',
 							escape(test.titleId), test.duration != undefined ? test.duration : 1
 						));
 						switch(test.state){
 							case 'failed':
-								append(util.format(
+								append(logFd, util.format(
 									'			<failure message="%s"><![CDATA[%s]]></failure>',
 									escape(test.message), test.stack
 								));
 								break;
 							case 'skipped':	
-								append(util.format(
+								append(logFd, util.format(
 									'			<skipped message="%s"></skipped>', escape(test.title)
 								));
 								break;
 						}
-						append('		</testCase>');
+						append(logFd, '		</testCase>');
 				}
 			});
-			append('	</file>');
+			append(logFd, '	</file>');
 		});
-		append('</unitTest>');
+		append(logFd, '</unitTest>');
 		
 		if(logFd !== undefined) {
 			fs.closeSync(logFd);
@@ -83,7 +84,7 @@ module.exports = function (runner, options) {
 	});
 };
 
-function append(str) {
+function append(logFd, str) {
 	if(logFd !== undefined) {
 		fs.writeSync(logFd, str + os.EOL);
 	} else {

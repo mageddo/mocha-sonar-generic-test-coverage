@@ -1,5 +1,6 @@
 var assert = require("assert"),
 		report = require("../../../index.js"),
+		util = require("util"),
 		fs = require("fs");
 
 var reportFile = "out/report.xml";
@@ -10,7 +11,7 @@ describe('Mocha Sonar Generic Report', function(){
 
 		it('Report To File Success', function(){
 
-			fs.unlinkSync(reportFile);
+			resetTest();
 
 			var runner = new Runner();
 			report(runner, {
@@ -36,7 +37,7 @@ describe('Mocha Sonar Generic Report', function(){
 
 		it('Report To File Success And Error', function(){
 
-			fs.unlinkSync(reportFile);
+			resetTest();
 
 			var runner = new Runner();
 			report(runner, {
@@ -67,7 +68,7 @@ describe('Mocha Sonar Generic Report', function(){
 
 		it('Report To File With FullPath', function(){
 
-			fs.unlinkSync(reportFile);
+			resetTest();
 
 			var runner = new Runner();
 			report(runner, {
@@ -92,13 +93,65 @@ describe('Mocha Sonar Generic Report', function(){
 
 		});
 
+		it('Report To File By Env', function(){
+
+			resetTest();
+			process.env.mocha_sonar_generic_test_coverage_outputfile = "out/report-env.xml";
+
+			var runner = new Runner();
+			report(runner, {});
+			runner.run([
+				new Test('Success Test', null, null, 1, 'success', process.cwd() + '/tmp/test.js')
+			]);
+
+			var actualContent = getFileContent("out/report-env.xml");
+			var expected = `<unitTest version="1">
+	<file path="tmp/test.js">
+		<testCase name="Success Test" duration="1">
+		</testCase>
+	</file>
+</unitTest>
+`;
+			assert.deepEqual(actualContent, expected);
+
+		});
+
+		it('Report To Sdout', function(){
+
+			resetTest();
+			var actualContent = "";
+			var unhook = hookStdout(function(str, encoding, fd){
+				actualContent += str;
+			});
+			var runner = new Runner();
+			report(runner, {});
+			runner.run([
+				new Test('Success Test', null, null, 1, 'success', process.cwd() + '/tmp/test.js')
+			]);
+
+			var expected = `<unitTest version="1">
+	<file path="tmp/test.js">
+		<testCase name="Success Test" duration="1">
+		</testCase>
+	</file>
+</unitTest>
+`;
+			unhook();
+			assert.deepEqual(actualContent, expected);
+
+		});
+
 	});
 
 });
 
 
 function getFileContent(reportFile){
-	return fs.readFileSync(reportFile, 'utf8')
+	try{
+		return fs.readFileSync(reportFile, 'utf8')
+	} catch(e){
+		return "";
+	}
 }
 
 function Test(title, stack, message, duration, state, file){
@@ -115,9 +168,7 @@ function Test(title, stack, message, duration, state, file){
 	}
 }
 
-function Runner (appender){
-
-	this.appender = appender;
+function Runner (){
 
 	var testTend = [];
 	var end = [];
@@ -150,4 +201,22 @@ function Runner (appender){
 		})
 
 	}
+}
+function resetTest(){
+	try{
+		delete process.env['mocha_sonar_generic_test_coverage_outputfile'];
+		fs.unlinkSync(reportFile);
+	}catch(e){}
+}
+
+function hookStdout(callback) {
+
+		var oldWrite = process.stdout.write
+		process.stdout.write = function(string, encoding, fd) {
+				callback(string, encoding, fd)
+		}
+		
+		return function() {
+			process.stdout.write = oldWrite
+		}
 }

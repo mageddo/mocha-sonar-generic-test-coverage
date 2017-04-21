@@ -1,0 +1,28 @@
+{
+  "name": "mocha-generic-test-coverage",
+  "description": "",
+  "version": "0.0.1",
+  "engines": {
+    "node": "0.10.x"
+  },
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha"
+  },
+  "private": true,
+  "main": "app/app.js",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "assert": "1.4.1",
+    "grunt": "~0.4.2",
+    "grunt-env": "~0.4.1",
+    "grunt-mocha-test": "0.13.2",
+    "grunt-nodemon": "~0.2.0",
+    "grunt-sonar-runner": "^2.4.4",
+    "mocha": "^3.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gregjopa/express-app-testing-demo"
+  }
+}

@@ -5,6 +5,7 @@ module.exports = function (runner) {
 
 	var stack = {};
 	runner.on('test end', function(test){
+
 		var file = test.file.substr(test.file.indexOf(process.cwd()) + process.cwd().length + 1);
 		stackF = stack[file];
 		if(!stackF){
@@ -66,8 +67,13 @@ module.exports = function (runner) {
 	});
 };
 function append(str) {
-	process.stdout.write(str);
-	process.stdout.write('\n');
+	if(GLOBAL['mstc']){
+		GLOBAL['mstc'](str);
+		GLOBAL['mstc']('\n');
+	}else{
+		process.stdout.write(str);
+		process.stdout.write('\n');
+	}
 };
 function escape(str){
 	str = str || '';

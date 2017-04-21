@@ -9,7 +9,7 @@ module.exports = function(grunt) {
       test: {
         options: {
           mstc: {
-            outputFile: "out/results.xml"
+            outputFile: "out/results.xml" // if you want to capture to this file instead captureFile (this file will not get prints at stdout)
           },
           reporter: 'mocha-sonar-generic-test-coverage',
           captureFile: 'out/results.txt', // Optionally capture the reporter output to a file 

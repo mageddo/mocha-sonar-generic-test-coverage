@@ -34,15 +34,14 @@ On **mocha-test** for use with grunt
 ```
 
 # Testing
-	$ npm test
+	$ npm install && npm test
 
 # Report demo sample
 
 	$ npm install && \
-	cd test && \
+	cd demo && \
 	npm install && \
-	npm run-script grunt-test && \
-	echo -e "The results >>> \n" && cat out/results.xml
+	npm start
 
 # Output example 
 	<unitTest version="1">

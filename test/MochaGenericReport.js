@@ -116,7 +116,7 @@ describe('Mocha Sonar Generic Report', function(){
 
 		});
 
-		it('Report To Sdout', function(){
+		it('Report To Stdout', function(){
 
 			resetTest();
 			var actualContent = "";

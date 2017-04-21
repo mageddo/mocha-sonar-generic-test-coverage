@@ -13,10 +13,8 @@
   "dependencies": {
   },
   "devDependencies": {
-    "assert": "1.4.1",
     "grunt": "1.0.1",
     "grunt-mocha-test": "0.13.2",
-    "mocha": "^3.0.2",
     "mocha-sonar-generic-test-coverage": "file:../"
   },
   "repository": {

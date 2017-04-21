@@ -6,7 +6,8 @@
     "node": "0.10.x"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha"
+    "test": "./node_modules/mocha/bin/mocha",
+    "grunt-test": "./node_modules/.bin/grunt"
   },
   "private": true,
   "main": "app/app.js",
@@ -14,12 +15,10 @@
   },
   "devDependencies": {
     "assert": "1.4.1",
-    "grunt": "~0.4.2",
-    "grunt-env": "~0.4.1",
+    "grunt": "1.0.1",
     "grunt-mocha-test": "0.13.2",
-    "grunt-nodemon": "~0.2.0",
-    "grunt-sonar-runner": "^2.4.4",
-    "mocha": "^3.0.2"
+    "mocha": "^3.0.2",
+    "mocha-sonar-generic-test-coverage": "file:../"
   },
   "repository": {
     "type": "git",

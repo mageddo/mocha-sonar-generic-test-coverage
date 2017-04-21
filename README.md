@@ -30,7 +30,7 @@ mochaTest: {
 			'test.js'
 		]
 	}
-	}
+}
 ```
 
 # Testing

@@ -1,12 +1,24 @@
 var fs = require('fs'),
-		util = require('util');
+	util = require('util'),
+	path = require('path'),
+	mkdirpSync = require('mkdirp').sync,
+	os = require('os');
+
 
 module.exports = function (runner, options) {
 
-	var stack = {};
+	var stack = {},
+		logFd;
+
+	var outputfile = getProp(options, 'mstc.outputFile');
+    if (outputfile) {
+		mkdirpSync(path.dirname(outputfile));
+		logFd = fs.openSync(outputfile, 'w');
+    }
+
 	runner.on('test end', function(test){
 
-		var file = test.file.substr(test.file.indexOf(process.cwd()) + process.cwd().length + 1);
+		var file = getProp(options, 'mstc.useFileFullPath') ? test.file : test.file.substr(test.file.indexOf(process.cwd()) + process.cwd().length + 1);
 		stackF = stack[file];
 		if(!stackF){
 			stackF = stack[file] = [];
@@ -64,13 +76,16 @@ module.exports = function (runner, options) {
 			append('	</file>');
 		});
 		append('</unitTest>');
+		
+		if(logFd !== undefined) {
+			fs.closeSync(logFd);
+		}
 	});
 };
 function append(str) {
-	if(GLOBAL['mstc']){
-		GLOBAL['mstc'](str);
-		GLOBAL['mstc']('\n');
-	}else{
+	if(logFd !== undefined) {
+		fs.writeSync(logFd, str + os.EOL);
+	} else {
 		process.stdout.write(str);
 		process.stdout.write('\n');
 	}

@@ -1,56 +1,66 @@
-var assert = require("assert")
-var report = require("../../../index.js")
+var assert = require("assert"),
+		report = require("../../../index.js"),
+		fs = require("fs");
+
+var reportFile = "out/report.xml";
 
 describe('Mocha Sonar Generic Report', function(){
 
 	describe('Report', function(){
-		
-		it('Report To Sdout', function(){
-			
-			var appender = "";
 
-			GLOBAL['mstc'] = function(str){
-				appender += str;
-			}
-			var runner = new Runner();
-			report(runner, {});
-			runner.run([
-				new Test('Success Test', null, null, 1, 'success', process.cwd()+'/tmp/test.js')
-			]);
+		it('Report To File Success', function(){
 
-			expected = `<unitTest version="1">
-	<file path="tmp/test.js">
-		<testCase name="Success Test" duration="1">
-		</testCase>
-	</file>
-</unitTest>
-`;
-			assert.deepEqual(appender, expected);
-
-		});
-
-		it('Report To File', function(){
-			
-			var appender = "";
+			fs.unlinkSync(reportFile);
 
 			var runner = new Runner();
 			report(runner, {
 				mstc: {
-					outputFile: "out/report.xml"
+					outputFile: reportFile
 				}
 			});
 			runner.run([
 				new Test('Success Test', null, null, 1, 'success', process.cwd()+'/tmp/test.js')
 			]);
 
-			expected = `<unitTest version="1">
+			var actualContent = getFileContent(reportFile);
+			var expected = `<unitTest version="1">
 	<file path="tmp/test.js">
 		<testCase name="Success Test" duration="1">
 		</testCase>
 	</file>
 </unitTest>
 `;
-			assert.deepEqual(appender, expected);
+			assert.deepEqual(actualContent, expected);
+
+		});
+
+		it('Report To File Success And Error', function(){
+
+			fs.unlinkSync(reportFile);
+
+			var runner = new Runner();
+			report(runner, {
+				mstc: {
+					outputFile: reportFile
+				}
+			});
+			runner.run([
+				new Test('Success Test', null, null, 1, 'success', process.cwd()+'/tmp/test.js'),
+				new Test('Success Test', "IO error", "File not found", 2, 'failed', process.cwd()+'/tmp/test.js'),
+			]);
+
+			var actualContent = getFileContent(reportFile);
+			var expected = `<unitTest version="1">
+	<file path="tmp/test.js">
+		<testCase name="Success Test" duration="1">
+		</testCase>
+		<testCase name="Success Test" duration="2">
+			<failure message="File not found"><![CDATA[IO error]]></failure>
+		</testCase>
+	</file>
+</unitTest>
+`;
+			assert.deepEqual(actualContent, expected);
 
 		});
 
@@ -58,6 +68,10 @@ describe('Mocha Sonar Generic Report', function(){
 
 });
 
+
+function getFileContent(reportFile){
+	return fs.readFileSync(reportFile, 'utf8')
+}
 
 function Test(title, stack, message, duration, state, file){
 

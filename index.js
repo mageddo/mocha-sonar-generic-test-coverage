@@ -4,17 +4,17 @@ var fs = require('fs'),
 	mkdirpSync = require('mkdirp').sync,
 	os = require('os');
 
+var logFd;
 
 module.exports = function (runner, options) {
 
-	var stack = {},
-		logFd;
+	var stack = {};
 
 	var outputfile = getProp(options, 'mstc.outputFile');
-    if (outputfile) {
+	if (outputfile) {
 		mkdirpSync(path.dirname(outputfile));
 		logFd = fs.openSync(outputfile, 'w');
-    }
+	}
 
 	runner.on('test end', function(test){
 
@@ -82,6 +82,7 @@ module.exports = function (runner, options) {
 		}
 	});
 };
+
 function append(str) {
 	if(logFd !== undefined) {
 		fs.writeSync(logFd, str + os.EOL);
@@ -89,7 +90,8 @@ function append(str) {
 		process.stdout.write(str);
 		process.stdout.write('\n');
 	}
-};
+}
+
 function escape(str){
 	str = str || '';
 	return str.replace(/&/g, '&amp;')
@@ -97,4 +99,19 @@ function escape(str){
 				.replace(/>/g, '&gt;')
 				.replace(/"/g, '&quot;')
 				.replace(/'/g, '&apos;');
+}
+
+function getProp(map, keys){
+
+	var props = keys.split("\.");
+	for(var i=0; i < props.length; i++) {
+
+		var prop = props[i];
+		map = map[prop];
+		if (!map){
+			return null;
+		}
+
+	}
+	return map;
 }

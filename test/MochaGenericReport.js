@@ -1,5 +1,5 @@
 var assert = require("assert"),
-		report = require("../../../index.js"),
+		report = require("../index.js"),
 		util = require("util"),
 		fs = require("fs");
 

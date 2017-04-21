@@ -6,8 +6,7 @@
     "node": "0.10.x"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha main/unit",
-    "grunt-test": "./node_modules/.bin/grunt"
+    "start": "./node_modules/.bin/grunt"
   },
   "private": true,
   "main": "app/app.js",

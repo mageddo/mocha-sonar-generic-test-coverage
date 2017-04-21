@@ -7,6 +7,13 @@
 	"dependencies": {
 		"mkdirp": "0.5.1"
 	},
+	"devDependencies": {
+		"assert": "1.4.1",
+		"mocha": "^3.0.2"
+	},
+	"scripts": {
+		"test": "./node_modules/mocha/bin/mocha test"
+	},
 	"maintainers": [
 		{
 			"name": "Elvis de Freitas",

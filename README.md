@@ -13,22 +13,36 @@ On pure mocha
 
 On **mocha-test** for use with grunt
 
+```javascript
 	mochaTest: {
 		coverage: {
 			options: {
 				reporter: 'mocha-sonar-generic-test-coverage',
-				quiet: false
+				quiet: false,
+				captureFile: null, // default mocha test capture file variable
+				mstc: {
+					outputFile: null, // relative path file to capture instead append to captureFile (this file will not get prints at stdout) you can use mocha_sonar_generic_test_coverage_outputfile env instead
+					useFileFullPath: false // generate report for the files using fullpath
+				}
+			}
 			},
 			src: [
 				'test.js'
 			]
 		}
 	}
+```
 
-If you want to write your report in a specific file (instead of standard output by default), add the following environment variable with the path to the report file:
-	env: {
-    	mocha_sonar_generic_test_coverage_outputfile:'output/unit-tests.xml'
-	}
+# Testing
+	$ npm test
+
+# Report demo sample
+
+	$ npm install && \
+	cd test && \
+	npm install && \
+	npm run-script grunt-test && \
+	echo -e "The results >>> \n" && cat out/results.xml
 
 # Output example 
 	<unitTest version="1">

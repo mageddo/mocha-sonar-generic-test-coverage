@@ -41,7 +41,8 @@ describe('Mocha Sonar Generic Report', function(){
 			var runner = new Runner();
 			report(runner, {
 				mstc: {
-					outputFile: reportFile
+					outputFile: reportFile,
+					useFileFullPath: false
 				}
 			});
 			runner.run([
@@ -56,6 +57,33 @@ describe('Mocha Sonar Generic Report', function(){
 		</testCase>
 		<testCase name="Success Test" duration="2">
 			<failure message="File not found"><![CDATA[IO error]]></failure>
+		</testCase>
+	</file>
+</unitTest>
+`;
+			assert.deepEqual(actualContent, expected);
+
+		});
+
+		it('Report To File With FullPath', function(){
+
+			fs.unlinkSync(reportFile);
+
+			var runner = new Runner();
+			report(runner, {
+				mstc: {
+					outputFile: reportFile,
+					useFileFullPath: true
+				}
+			});
+			runner.run([
+				new Test('Success Test', null, null, 1, 'success', '/tmp/test.js')
+			]);
+
+			var actualContent = getFileContent(reportFile);
+			var expected = `<unitTest version="1">
+	<file path="/tmp/test.js">
+		<testCase name="Success Test" duration="1">
 		</testCase>
 	</file>
 </unitTest>

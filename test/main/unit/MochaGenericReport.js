@@ -13,7 +13,7 @@ describe('Mocha Sonar Generic Report', function(){
 				appender += str;
 			}
 			var runner = new Runner();
-			report(runner);
+			report(runner, {});
 			runner.run([
 				new Test('Success Test', null, null, 1, 'success', process.cwd()+'/tmp/test.js')
 			]);
@@ -28,6 +28,32 @@ describe('Mocha Sonar Generic Report', function(){
 			assert.deepEqual(appender, expected);
 
 		});
+
+		it('Report To File', function(){
+			
+			var appender = "";
+
+			var runner = new Runner();
+			report(runner, {
+				mstc: {
+					outputFile: "out/report.xml"
+				}
+			});
+			runner.run([
+				new Test('Success Test', null, null, 1, 'success', process.cwd()+'/tmp/test.js')
+			]);
+
+			expected = `<unitTest version="1">
+	<file path="tmp/test.js">
+		<testCase name="Success Test" duration="1">
+		</testCase>
+	</file>
+</unitTest>
+`;
+			assert.deepEqual(appender, expected);
+
+		});
+
 	});
 
 });

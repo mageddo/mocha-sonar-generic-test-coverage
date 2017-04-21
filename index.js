@@ -1,7 +1,7 @@
 var fs = require('fs'),
 		util = require('util');
 
-module.exports = function (runner) {
+module.exports = function (runner, options) {
 
 	var stack = {};
 	runner.on('test end', function(test){

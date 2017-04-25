@@ -13,35 +13,54 @@ On pure mocha
 
 On **mocha-test** for use with grunt
 
-	mochaTest: {
-		coverage: {
-			options: {
-				reporter: 'mocha-sonar-generic-test-coverage',
-				quiet: true,
-				captureFile: 'unit-tests.xml'
-			},
-			src: [
-				'test.js'
-			]
+```javascript
+mochaTest: {
+	coverage: {
+		options: {
+			reporter: 'mocha-sonar-generic-test-coverage',
+			quiet: false,
+			captureFile: null, // default mocha test capture file variable
+			mstc: {
+				outputFile: null, // relative path file to capture instead append to captureFile (this file will not get prints at stdout) 
+				useFileFullPath: false // generate report for the files using fullpath
+			}
 		}
+		},
+		src: [
+			'test.js'
+		]
 	}
+}
+```
+
+# Testing
+	$ npm install && npm test
+
+# Report demo sample
+
+	$ npm install && \
+	cd demo && \
+	npm install && \
+	npm start
 
 # Output example 
-	<unitTest version="1">
-		<file path="src/main/java/com/example/MyClass.java">
-			<testCase name="test1" duration="500"/>
-			<testCase name="test2" duration="600"/>
-			<testCase name="test3" duration="600">
-				<failure message="sort message">long stacktrace</failure>
-			</testCase>
-			<testCase name="test4" duration="600">
-				<error message="sort message">long stacktrace</error>
-			</testCase>
-			<testCase name="test5" duration="600">
-				<skipped message="sort message">long stacktrace</skipped>
-			</testCase>
-		</file>
-	</unitTest>
+```xml
+<unitTest version="1">
+	<file path="src/main/java/com/example/MyClass.java">
+		<testCase name="test1" duration="500"/>
+		<testCase name="test2" duration="600"/>
+		<testCase name="test3" duration="600">
+			<failure message="sort message">long stacktrace</failure>
+		</testCase>
+		<testCase name="test4" duration="600">
+			<error message="sort message">long stacktrace</error>
+		</testCase>
+		<testCase name="test5" duration="600">
+			<skipped message="sort message">long stacktrace</skipped>
+		</testCase>
+	</file>
+</unitTest>
+```
 
 Sonar preview
 

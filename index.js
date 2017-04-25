@@ -1,11 +1,24 @@
 var fs = require('fs'),
-		util = require('util');
+	util = require('util'),
+	path = require('path'),
+	mkdirpSync = require('mkdirp').sync,
+	os = require('os');
 
-module.exports = function (runner) {
 
-	var stack = {};
+module.exports = function (runner, options) {
+
+	var logFd, 
+	stack = {};
+
+	var outputfile = getProp(options, 'mstc.outputFile');
+	if (outputfile) {
+		mkdirpSync(path.dirname(outputfile));
+		logFd = fs.openSync(outputfile, 'w');
+	}
+
 	runner.on('test end', function(test){
-		var file = test.file.substr(test.file.indexOf(process.cwd()) + process.cwd().length + 1);
+
+		var file = getProp(options, 'mstc.useFileFullPath') ? test.file : test.file.substr(test.file.indexOf(process.cwd()) + process.cwd().length + 1);
 		stackF = stack[file];
 		if(!stackF){
 			stackF = stack[file] = [];
@@ -28,47 +41,57 @@ module.exports = function (runner) {
 	});
 
 	runner.on('end', function() {
-		append('<unitTest version="1">');
+		append(logFd, '<unitTest version="1">');
 		Object.keys(stack).forEach(function(file){
-			append(util.format('	<file path="%s">', file));
+			append(logFd, util.format('	<file path="%s">', file));
 			stack[file].forEach(function(test){
 				switch(test.state){
 					case 'passed':
-						append(util.format(
+						append(logFd, util.format(
 							'		<testCase name="%s" duration="%d"/>',
 							escape(test.titleId), test.duration
 						));
 						break;
 					default :
-						append(util.format(
+						append(logFd, util.format(
 							'		<testCase name="%s" duration="%d">',
 							escape(test.titleId), test.duration != undefined ? test.duration : 1
 						));
 						switch(test.state){
 							case 'failed':
-								append(util.format(
+								append(logFd, util.format(
 									'			<failure message="%s"><![CDATA[%s]]></failure>',
 									escape(test.message), test.stack
 								));
 								break;
 							case 'skipped':	
-								append(util.format(
+								append(logFd, util.format(
 									'			<skipped message="%s"></skipped>', escape(test.title)
 								));
 								break;
 						}
-						append('		</testCase>');
+						append(logFd, '		</testCase>');
 				}
 			});
-			append('	</file>');
+			append(logFd, '	</file>');
 		});
-		append('</unitTest>');
+		append(logFd, '</unitTest>');
+		
+		if(logFd !== undefined) {
+			fs.closeSync(logFd);
+		}
 	});
 };
-function append(str) {
-	process.stdout.write(str);
-	process.stdout.write('\n');
-};
+
+function append(logFd, str) {
+	if(logFd !== undefined) {
+		fs.writeSync(logFd, str + os.EOL);
+	} else {
+		process.stdout.write(str);
+		process.stdout.write('\n');
+	}
+}
+
 function escape(str){
 	str = str || '';
 	return str.replace(/&/g, '&amp;')
@@ -76,4 +99,19 @@ function escape(str){
 				.replace(/>/g, '&gt;')
 				.replace(/"/g, '&quot;')
 				.replace(/'/g, '&apos;');
+}
+
+function getProp(map, keys){
+
+	var props = keys.split("\.");
+	for(var i=0; i < props.length; i++) {
+
+		var prop = props[i];
+		map = map[prop];
+		if (!map){
+			return null;
+		}
+
+	}
+	return map;
 }

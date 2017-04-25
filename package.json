@@ -4,6 +4,16 @@
 	"keywords": ["mocha", "sonar", "coverage", "generic test"],
 	"license": "MIT",
 	"main": "index.js",
+	"dependencies": {
+		"mkdirp": "0.5.1"
+	},
+	"devDependencies": {
+		"assert": "1.4.1",
+		"mocha": "^3.0.2"
+	},
+	"scripts": {
+		"test": "./node_modules/mocha/bin/mocha test"
+	},
 	"maintainers": [
 		{
 			"name": "Elvis de Freitas",
@@ -15,5 +25,5 @@
 		"type": "git",
 		"url": "https://github.com/mageddo/mocha-sonar-generic-test-coverage"
 	},
-	"version": "0.0.1"
+	"version": "0.0.3"
 }

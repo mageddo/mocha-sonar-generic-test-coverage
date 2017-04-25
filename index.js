@@ -10,8 +10,7 @@ module.exports = function (runner, options) {
 	var logFd, 
 	stack = {};
 
-	var envVal = process.env.mocha_sonar_generic_test_coverage_outputfile;
-	var outputfile = envVal != null ? envVal : getProp(options, 'mstc.outputFile');
+	var outputfile = getProp(options, 'mstc.outputFile');
 	if (outputfile) {
 		mkdirpSync(path.dirname(outputfile));
 		logFd = fs.openSync(outputfile, 'w');

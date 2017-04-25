@@ -93,29 +93,6 @@ describe('Mocha Sonar Generic Report', function(){
 
 		});
 
-		it('Report To File By Env', function(){
-
-			resetTest();
-			process.env.mocha_sonar_generic_test_coverage_outputfile = "out/report-env.xml";
-
-			var runner = new Runner();
-			report(runner, {});
-			runner.run([
-				new Test('Success Test', null, null, 1, 'success', process.cwd() + '/tmp/test.js')
-			]);
-
-			var actualContent = getFileContent("out/report-env.xml");
-			var expected = `<unitTest version="1">
-	<file path="tmp/test.js">
-		<testCase name="Success Test" duration="1">
-		</testCase>
-	</file>
-</unitTest>
-`;
-			assert.deepEqual(actualContent, expected);
-
-		});
-
 		it('Report To Stdout', function(){
 
 			resetTest();

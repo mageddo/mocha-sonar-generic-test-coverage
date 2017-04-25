@@ -21,7 +21,7 @@ mochaTest: {
 			quiet: false,
 			captureFile: null, // default mocha test capture file variable
 			mstc: {
-				outputFile: null, // relative path file to capture instead append to captureFile (this file will not get prints at stdout) you can use mocha_sonar_generic_test_coverage_outputfile env instead
+				outputFile: null, // relative path file to capture instead append to captureFile (this file will not get prints at stdout) 
 				useFileFullPath: false // generate report for the files using fullpath
 			}
 		}

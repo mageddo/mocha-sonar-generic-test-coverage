@@ -1,3 +1,7 @@
+# Update
+Updated to conform SonarQube >6.2
+See: https://docs.sonarqube.org/display/PLUG/Generic+Test+Coverage
+
 # Introduction
 This is a mocha reporter project to integrate mocha unit tests to [sonar Generic Test coverage unit tests execution results](http://docs.sonarqube.org/display/PLUG/Generic+Test+Coverage#GenericTestCoverage-UnitTestsExecutionResultsReportFormat)
 

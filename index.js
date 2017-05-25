@@ -41,7 +41,7 @@ module.exports = function (runner, options) {
 	});
 
 	runner.on('end', function() {
-		append(logFd, '<unitTest version="1">');
+		append(logFd, '<testExecutions version="1">');
 		Object.keys(stack).forEach(function(file){
 			append(logFd, util.format('	<file path="%s">', file));
 			stack[file].forEach(function(test){
@@ -75,7 +75,7 @@ module.exports = function (runner, options) {
 			});
 			append(logFd, '	</file>');
 		});
-		append(logFd, '</unitTest>');
+		append(logFd, '</testExecutions>');
 		
 		if(logFd !== undefined) {
 			fs.closeSync(logFd);

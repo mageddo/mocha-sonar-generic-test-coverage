@@ -15,7 +15,7 @@ describe('Mocha Sonar Generic Report', function(){
 
 			var runner = new Runner();
 			report(runner, {
-				mstc: {
+				reporterOptions: {
 					outputFile: reportFile
 				}
 			});
@@ -41,7 +41,7 @@ describe('Mocha Sonar Generic Report', function(){
 
 			var runner = new Runner();
 			report(runner, {
-				mstc: {
+                reporterOptions: {
 					outputFile: reportFile,
 					useFileFullPath: false
 				}
@@ -72,7 +72,7 @@ describe('Mocha Sonar Generic Report', function(){
 
 			var runner = new Runner();
 			report(runner, {
-				mstc: {
+                reporterOptions: {
 					outputFile: reportFile,
 					useFileFullPath: true
 				}

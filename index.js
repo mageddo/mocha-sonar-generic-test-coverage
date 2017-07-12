@@ -10,7 +10,7 @@ module.exports = function (runner, options) {
 	var logFd, 
 	stack = {};
 
-	var outputfile = getProp(options, 'mstc.outputFile');
+	var outputfile = getProp(options, 'reporterOptions.outputFile');
 	if (outputfile) {
 		mkdirpSync(path.dirname(outputfile));
 		logFd = fs.openSync(outputfile, 'w');
@@ -18,7 +18,7 @@ module.exports = function (runner, options) {
 
 	runner.on('test end', function(test){
 
-		var file = getProp(options, 'mstc.useFileFullPath') ? test.file : test.file.substr(test.file.indexOf(process.cwd()) + process.cwd().length + 1);
+		var file = getProp(options, 'reporterOptions.useFileFullPath') ? test.file : test.file.substr(test.file.indexOf(process.cwd()) + process.cwd().length + 1);
 		stackF = stack[file];
 		if(!stackF){
 			stackF = stack[file] = [];

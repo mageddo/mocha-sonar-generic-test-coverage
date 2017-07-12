@@ -12,7 +12,7 @@
 		"mocha": "^3.0.2"
 	},
 	"scripts": {
-		"test": "./node_modules/mocha/bin/mocha test"
+		"test": "node node_modules/mocha/bin/mocha test"
 	},
 	"maintainers": [
 		{

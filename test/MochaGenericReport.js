@@ -31,7 +31,7 @@ describe('Mocha Sonar Generic Report', function(){
 	</file>
 </unitTest>
 `;
-			assert.deepEqual(actualContent, expected);
+			assertXML(actualContent, expected);
 
 		});
 
@@ -62,7 +62,7 @@ describe('Mocha Sonar Generic Report', function(){
 	</file>
 </unitTest>
 `;
-			assert.deepEqual(actualContent, expected);
+			assertXML(actualContent, expected);
 
 		});
 
@@ -89,7 +89,7 @@ describe('Mocha Sonar Generic Report', function(){
 	</file>
 </unitTest>
 `;
-			assert.deepEqual(actualContent, expected);
+			assertXML(actualContent, expected);
 
 		});
 
@@ -114,13 +114,23 @@ describe('Mocha Sonar Generic Report', function(){
 </unitTest>
 `;
 			unhook();
-			assert.deepEqual(actualContent, expected);
+			assertXML(actualContent, expected);
 
 		});
 
 	});
 
 });
+
+function replaceAll(string, search, replacement) {
+    return string.split(search).join(replacement);
+};
+
+function assertXML(actual, expected) {
+	var actual = replaceAll(actual, '\r\n', '\n');
+    var expected = replaceAll(expected, '\r\n', '\n');
+	assert.deepEqual(actual, expected);
+}
 
 
 function getFileContent(reportFile){

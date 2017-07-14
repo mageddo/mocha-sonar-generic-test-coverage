@@ -10,7 +10,7 @@ module.exports = function (runner, options) {
 	var logFd, 
 	stack = {};
 
-	var outputfile = getProp(options, 'reporterOptions.outputFile');
+	var outputfile = getPrefixedProp(options, 'outputFile');
 	if (outputfile) {
 		mkdirpSync(path.dirname(outputfile));
 		logFd = fs.openSync(outputfile, 'w');
@@ -18,7 +18,7 @@ module.exports = function (runner, options) {
 
 	runner.on('test end', function(test){
 
-		var file = getProp(options, 'reporterOptions.useFileFullPath') ? test.file : test.file.substr(test.file.indexOf(process.cwd()) + process.cwd().length + 1);
+		var file = getPrefixedProp(options, 'useFileFullPath') ? test.file : test.file.substr(test.file.indexOf(process.cwd()) + process.cwd().length + 1);
 		stackF = stack[file];
 		if(!stackF){
 			stackF = stack[file] = [];
@@ -99,6 +99,10 @@ function escape(str){
 				.replace(/>/g, '&gt;')
 				.replace(/"/g, '&quot;')
 				.replace(/'/g, '&apos;');
+}
+
+function getPrefixedProp(map, keys) {
+	return getProp(map, 'reporterOptions.' + keys) || getProp(map, 'mtsc.' + keys);
 }
 
 function getProp(map, keys){

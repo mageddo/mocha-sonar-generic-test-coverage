@@ -9,7 +9,7 @@ module.exports = function(grunt) {
       test: {
         options: {
           mstc: {
-            outputFile: "out/results.xml" // if you want to capture to this file instead captureFile (this file will not get prints at stdout)
+            outputFile: "report/unittest.xml" // if you want to capture to this file instead captureFile (this file will not get prints at stdout)
           },
           reporter: 'mocha-sonar-generic-test-coverage',
           // captureFile: 'out/results.txt', // Optionally capture the reporter output to a file 
@@ -17,7 +17,7 @@ module.exports = function(grunt) {
           clearRequireCache: false, // Optionally clear the require cache before running tests (defaults to false) 
           noFail: false // Optionally set to not fail on failed tests (will still fail on other errors) 
         },
-        src: ['test/**/*.js']
+        src: ['src/test/js/**/*.js']
       }
     }
   });

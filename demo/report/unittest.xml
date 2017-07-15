@@ -1,0 +1,9 @@
+<unitTest version="1">
+  <file path="test/js/test_foo.js">
+    <testCase name="test2" duration="250"/>
+    <testCase name="test3" duration="400">
+      <failure message="short message">long long stacktrace</failure>
+    </testCase>
+    <testCase name="test5" duration="900"/>
+  </file>
+</unitTest>

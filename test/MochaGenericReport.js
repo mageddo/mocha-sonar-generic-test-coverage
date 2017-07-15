@@ -9,50 +9,104 @@ describe('Mocha Sonar Generic Report', function(){
 
 	describe('Report', function(){
 
-		it('Report To File Success', function(){
+        it('Report To File Success with reporterOptions prefix', function(){
+            testReportToFileSuccess('reporterOptions')
+        });
 
-			resetTest();
+        it('Report To File Success with mtsc prefix', function(){
+            testReportToFileSuccess('mtsc')
+        });
 
-			var runner = new Runner();
-			report(runner, {
-				mstc: {
-					outputFile: reportFile
-				}
-			});
-			runner.run([
-				new Test('Success Test', null, null, 1, 'success', process.cwd()+'/tmp/test.js')
-			]);
+        it('Report To File Success And Error with reporterOptions prefix', function(){
+            testReportToFileSuccessAndError('reporterOptions')
+        });
 
-			var actualContent = getFileContent(reportFile);
-			var expected = `<unitTest version="1">
+        it('Report To File Success And Error with mtsc prefix', function(){
+            testReportToFileSuccessAndError('mtsc')
+        });
+
+        it('Report To File With FullPath with reporterOptions prefix', function(){
+            testReportToFileWithFullPath('reporterOptions')
+        });
+
+        it('Report To File With FullPath with mtsc prefix', function(){
+            testReportToFileWithFullPath('mtsc')
+        });
+
+		it('Report To Stdout', function(){
+            testReportToStdout();
+		});
+
+	});
+
+});
+
+function config(prefix, config) {
+    var ret = {};
+    ret[prefix] = config
+    return ret;
+}
+
+function testReportToStdout() {
+    resetTest();
+    var actualContent = "";
+    var unhook = hookStdout(function(str, encoding, fd){
+        actualContent += str;
+    });
+    var runner = new Runner();
+    report(runner, {});
+    runner.run([
+        new Test('Success Test', null, null, 1, 'success', process.cwd() + '/tmp/test.js')
+    ]);
+
+    var expected = `<unitTest version="1">
 	<file path="tmp/test.js">
 		<testCase name="Success Test" duration="1">
 		</testCase>
 	</file>
 </unitTest>
 `;
-			assertXML(actualContent, expected);
+    unhook();
+    assertXML(actualContent, expected);
+}
 
-		});
+function testReportToFileSuccess(prefix) {
+    resetTest();
 
-		it('Report To File Success And Error', function(){
+    var runner = new Runner();
+    report(runner, config(prefix, {
+        outputFile: reportFile
+    }));
+    runner.run([
+        new Test('Success Test', null, null, 1, 'success', process.cwd()+'/tmp/test.js')
+    ]);
 
-			resetTest();
+    var actualContent = getFileContent(reportFile);
+    var expected = `<unitTest version="1">
+	<file path="tmp/test.js">
+		<testCase name="Success Test" duration="1">
+		</testCase>
+	</file>
+</unitTest>
+`;
+    assertXML(actualContent, expected);
+}
 
-			var runner = new Runner();
-			report(runner, {
-				mstc: {
-					outputFile: reportFile,
-					useFileFullPath: false
-				}
-			});
-			runner.run([
-				new Test('Success Test', null, null, 1, 'success', process.cwd()+'/tmp/test.js'),
-				new Test('Success Test', "IO error", "File not found", 2, 'failed', process.cwd()+'/tmp/test.js'),
-			]);
+function testReportToFileSuccessAndError(prefix) {
+    resetTest();
 
-			var actualContent = getFileContent(reportFile);
-			var expected = `<unitTest version="1">
+    var runner = new Runner();
+    report(runner, config(prefix, {
+        outputFile: reportFile,
+        useFileFullPath: false
+    }));
+    runner.run([
+        new Test('Success Test', null, null, 1, 'success', process.cwd()+'/tmp/test.js'),
+        new Test('Success Test', "IO error", "File not found", 2, 'failed', process.cwd()+'/tmp/test.js'),
+    ]);
+
+    var actualContent = getFileContent(reportFile);
+    var expected = `<unitTest version="1">
 	<file path="tmp/test.js">
 		<testCase name="Success Test" duration="1">
 		</testCase>
@@ -62,65 +116,31 @@ describe('Mocha Sonar Generic Report', function(){
 	</file>
 </unitTest>
 `;
-			assertXML(actualContent, expected);
+    assertXML(actualContent, expected);
+}
 
-		});
+function testReportToFileWithFullPath(prefix) {
+    resetTest();
 
-		it('Report To File With FullPath', function(){
+    var runner = new Runner();
+    report(runner, config(prefix, {
+        outputFile: reportFile,
+        useFileFullPath: true
+    }));
+    runner.run([
+        new Test('Success Test', null, null, 1, 'success', '/tmp/test.js')
+    ]);
 
-			resetTest();
-
-			var runner = new Runner();
-			report(runner, {
-				mstc: {
-					outputFile: reportFile,
-					useFileFullPath: true
-				}
-			});
-			runner.run([
-				new Test('Success Test', null, null, 1, 'success', '/tmp/test.js')
-			]);
-
-			var actualContent = getFileContent(reportFile);
-			var expected = `<unitTest version="1">
+    var actualContent = getFileContent(reportFile);
+    var expected = `<unitTest version="1">
 	<file path="/tmp/test.js">
 		<testCase name="Success Test" duration="1">
 		</testCase>
 	</file>
 </unitTest>
 `;
-			assertXML(actualContent, expected);
-
-		});
-
-		it('Report To Stdout', function(){
-
-			resetTest();
-			var actualContent = "";
-			var unhook = hookStdout(function(str, encoding, fd){
-				actualContent += str;
-			});
-			var runner = new Runner();
-			report(runner, {});
-			runner.run([
-				new Test('Success Test', null, null, 1, 'success', process.cwd() + '/tmp/test.js')
-			]);
-
-			var expected = `<unitTest version="1">
-	<file path="tmp/test.js">
-		<testCase name="Success Test" duration="1">
-		</testCase>
-	</file>
-</unitTest>
-`;
-			unhook();
-			assertXML(actualContent, expected);
-
-		});
-
-	});
-
-});
+    assertXML(actualContent, expected);
+}
 
 function replaceAll(string, search, replacement) {
     return string.split(search).join(replacement);

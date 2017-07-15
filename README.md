@@ -20,7 +20,7 @@ mochaTest: {
 			reporter: 'mocha-sonar-generic-test-coverage',
 			quiet: false,
 			captureFile: null, // default mocha test capture file variable
-			mstc: {
+			reporterOptions: {
 				outputFile: null, // relative path file to capture instead append to captureFile (this file will not get prints at stdout) 
 				useFileFullPath: false // generate report for the files using fullpath
 			}

@@ -13,24 +13,24 @@ describe('Mocha Sonar Generic Report', function(){
             testReportToFileSuccess('reporterOptions')
         });
 
-        it('Report To File Success with mtsc prefix', function(){
-            testReportToFileSuccess('mtsc')
+        it('Report To File Success with mstc prefix', function(){
+            testReportToFileSuccess('mstc')
         });
 
         it('Report To File Success And Error with reporterOptions prefix', function(){
             testReportToFileSuccessAndError('reporterOptions')
         });
 
-        it('Report To File Success And Error with mtsc prefix', function(){
-            testReportToFileSuccessAndError('mtsc')
+        it('Report To File Success And Error with mstc prefix', function(){
+            testReportToFileSuccessAndError('mstc')
         });
 
         it('Report To File With FullPath with reporterOptions prefix', function(){
             testReportToFileWithFullPath('reporterOptions')
         });
 
-        it('Report To File With FullPath with mtsc prefix', function(){
-            testReportToFileWithFullPath('mtsc')
+        it('Report To File With FullPath with mstc prefix', function(){
+            testReportToFileWithFullPath('mstc')
         });
 
 		it('Report To Stdout', function(){

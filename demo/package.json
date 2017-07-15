@@ -6,7 +6,7 @@
     "node": "0.10.x"
   },
   "scripts": {
-    "start": "./node_modules/.bin/grunt"
+    "start": "./node_modules/.bin/grunt --force"
   },
   "private": true,
   "main": "app/app.js",

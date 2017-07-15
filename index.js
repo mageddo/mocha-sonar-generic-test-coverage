@@ -102,7 +102,7 @@ function escape(str){
 }
 
 function getPrefixedProp(map, keys) {
-	return getProp(map, 'reporterOptions.' + keys) || getProp(map, 'mtsc.' + keys);
+	return getProp(map, 'reporterOptions.' + keys) || getProp(map, 'mstc.' + keys);
 }
 
 function getProp(map, keys){

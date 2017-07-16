@@ -1,0 +1,8 @@
+version: '2'
+services:
+  sonar:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mocha-sonar-generic-test-coverage
+    image: defreitas/mocha-sonar-generic-test-coverage:0.0.5

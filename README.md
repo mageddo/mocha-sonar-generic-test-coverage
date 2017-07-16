@@ -43,7 +43,16 @@ mochaTest: {
 	npm install && \
 	npm start
 
-# Output example 
+# Running sonarscanner
+
+	$ docker run --name sonarqube -v $PWD:/app defreitas/mocha-sonar-generic-test-coverage:0.0.5
+
+# Reporting to sonarqube
+
+	$ docker exec -it sonarqube sh -c 'cd /app && sonar-scanner'
+
+Output example 
+
 ```xml
 <unitTest version="1">
 	<file path="src/main/java/com/example/MyClass.java">

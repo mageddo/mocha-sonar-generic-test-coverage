@@ -85,3 +85,9 @@ Sonar preview
 ![](http://i.imgur.com/mlxAPI1.jpg)
 ![](http://i.imgur.com/n9eCbt7.jpg)
 ![](http://i.imgur.com/Bfw0amn.jpg)
+
+
+# Release Notes
+0.0.6 backing mstc support
+0.0.5 SonarQube > 6.2 support - [See reference](See: https://docs.sonarqube.org/display/PLUG/Generic+Test+Coverage)
+0.0.4 `mstc` variable was migrated to `reporterOptions`, anyway `mstc` it's supported yet

@@ -43,9 +43,15 @@ mochaTest: {
 	npm install && \
 	npm start
 
+	Running "mochaTest:test" (mochaTest) task
+	Warning: Task "mochaTest:test" failed. Used --force, continuing.
+	Done, but with warnings.
+
+There is one test with error intencionally for metrics at sonar
+
 # Running sonarscanner
 
-	$ docker run --name sonarqube -v $PWD:/app defreitas/mocha-sonar-generic-test-coverage:0.0.5
+	$ docker run --name sonarqube -v $PWD:/app defreitas/sonarqube:5.6.6
 
 # Reporting to sonarqube
 

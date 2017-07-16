@@ -4,5 +4,5 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: mocha-sonar-generic-test-coverage
-    image: defreitas/mocha-sonar-generic-test-coverage:0.0.5
+    container_name: sonarqube
+    image: defreitas/sonarqube:6.3.1-alpine

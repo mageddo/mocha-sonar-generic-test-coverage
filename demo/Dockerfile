@@ -1,4 +1,4 @@
-FROM sonarqube:5.6.6-alpine
+FROM sonarqube:6.3.1-alpine
 
 ENV PLUGINS_DIR=/opt/sonarqube/extensions/plugins/
 RUN wget -P $PLUGINS_DIR --no-verbose https://sonarsource.bintray.com/Distribution/sonar-javascript-plugin/sonar-javascript-plugin-2.11.jar && \

@@ -51,7 +51,7 @@ There is one test with error intencionally for metrics at sonar
 
 # Running sonarscanner
 
-	$ docker run --name sonarqube -v $PWD:/app defreitas/sonarqube:5.6.6
+	$ docker run --name sonarqube -v $PWD:/app defreitas/sonarqube:6.3.1-alpine
 
 # Reporting to sonarqube
 

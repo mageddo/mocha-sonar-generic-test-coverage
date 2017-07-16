@@ -34,6 +34,7 @@ mochaTest: {
 ```
 
 # Testing
+
 	$ npm install && npm test
 
 # Report demo sample
@@ -49,15 +50,17 @@ mochaTest: {
 
 There is one test with error intencionally for metrics at sonar
 
-# Running sonarscanner
+Running sonarscanner
 
-	$ docker run --name sonarqube -v $PWD:/app defreitas/sonarqube:6.3.1-alpine
+	$ docker run -p9000:9000 --name sonarqube -v $PWD:/app defreitas/sonarqube:6.3.1-alpine
 
-# Reporting to sonarqube
+Reporting to sonarqube
 
 	$ docker exec -it sonarqube sh -c 'cd /app && sonar-scanner'
 
-Output example 
+Then [open your browser](http://127.0.0.1:9000/component_measures/metric/tests/list?id=mocha-sonar-generic-test-coverage-demo) and see the test report results 
+
+# Output example 
 
 ```xml
 <unitTest version="1">
